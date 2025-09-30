@@ -1,4 +1,4 @@
-{ pkgs }: {
+Goatbot-updated/node_modules{ pkgs }: {
 	deps = [
 	 pkgs.postgresql
 	 pkgs.unzip

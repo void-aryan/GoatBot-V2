@@ -4,6 +4,14 @@
 
 ## Introduction
 
+### 🆕 **Latest Updates - v2.0 Refactor**
+- **🔧 Refactor(goat)**: Major code cleanup and optimization
+- **📧 Gmail OAuth Removal**: Removed deprecated Gmail OAuth mail setup dependencies
+- **🧹 Dependencies Cleanup**: Deleted Google API and nodemailer dependencies for mail sending
+- **🛡️ Better Error Handling**: Added error handling for failure to fetch the latest version
+- **📁 Script Simplification**: Simplified login script requiring based on environment
+- **🎯 Performance**: Improved overall bot performance and reduced memory footprint
+
 #### Join us in [Messenger Group](https://m.me/j/AbZ6Bj-uS3npg7di/)🍪
 ###### If you encounter any issues or difficulties, don't hesitate to reach out and ask for assistance here. Our team is here to help you with any problems you may face.
 
