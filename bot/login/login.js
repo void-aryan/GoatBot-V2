@@ -20,10 +20,13 @@ const qr = new (defaultRequire("qrcode-reader"));
 const Canvas = defaultRequire("canvas");
 const https = defaultRequire("https");
 
-async function getName(userID) {
+async function getName(userID, api) {
 	try {
-		const user = await axios.post(`https://www.facebook.com/api/graphql/?q=${`node(${userID}){name}`}`);
-		return user.data[userID].name;
+		if (api && api.getUserInfo) {
+			const userInfo = await api.getUserInfo(userID);
+			return userInfo[userID]?.name || null;
+		}
+		return null;
 	}
 	catch (error) {
 		return null;
@@ -526,7 +529,7 @@ async function getAppStateToLogin(loginWithEmail) {
 				const character = '>';
 				function showOptions() {
 					rl.output.write(`\r${options.map((option, index) => index === currentOption ? colors.blueBright(`${character} (${index + 1}) ${option}`) : `  (${index + 1}) ${option}`).join('\n')}\u001B`);
-					rl.write('\u001B[?25l'); // hides cursor
+					rl.write('\u001B[?25l'); 
 				}
 				rl.input.on('keypress', (_, key) => {
 					if (key.name === 'up') {
@@ -539,7 +542,7 @@ async function getAppStateToLogin(loginWithEmail) {
 						const number = parseInt(key.name);
 						if (number >= 0 && number <= options.length)
 							currentOption = number - 1;
-						process.stdout.write('\033[1D'); // delete the character
+						process.stdout.write('\x1b[1D'); 
 					}
 					else if (key.name === 'enter' || key.name === 'return') {
 						rl.input.removeAllListeners('keypress');
@@ -549,7 +552,7 @@ async function getAppStateToLogin(loginWithEmail) {
 						resolve();
 					}
 					else {
-						process.stdout.write('\033[1D'); // delete the character
+						process.stdout.write('\x1b[1D'); 
 					}
 
 					clearLines(options.length);
@@ -721,7 +724,7 @@ async function startBot(loginWithEmail) {
 			logColor("#f5ab00", createLine("BOT INFO"));
 			log.info("NODE VERSION", process.version);
 			log.info("PROJECT VERSION", currentVersion);
-			log.info("BOT ID", `${global.botID} - ${await getName(global.botID)}`);
+			log.info("BOT ID", `${global.botID} - ${await getName(global.botID, api)}`);
 			log.info("PREFIX", global.GoatBot.config.prefix);
 			log.info("LANGUAGE", global.GoatBot.config.language);
 			log.info("BOT NICK NAME", global.GoatBot.config.nickNameBot || "GOAT BOT");
